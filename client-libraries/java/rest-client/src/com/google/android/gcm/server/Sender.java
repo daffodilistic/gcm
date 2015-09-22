@@ -177,6 +177,9 @@ public class Sender {
     if (timeToLive != null) {
       addParameter(body, PARAM_TIME_TO_LIVE, Integer.toString(timeToLive));
     }
+    //addParameter(body, "content_available", "true");
+    
+    // Convert Message object to a JSON object
     for (Entry<String, String> entry : message.getData().entrySet()) {
       String key = entry.getKey();
       String value = entry.getValue();
@@ -405,6 +408,7 @@ public class Sender {
     setJsonField(jsonRequest, PARAM_DELAY_WHILE_IDLE,
         message.isDelayWhileIdle());
     setJsonField(jsonRequest, PARAM_DRY_RUN, message.isDryRun());
+    setJsonField(jsonRequest, "content_available", true);
     jsonRequest.put(JSON_REGISTRATION_IDS, registrationIds);
     Map<String, String> payload = message.getData();
     if (!payload.isEmpty()) {

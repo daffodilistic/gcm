@@ -63,6 +63,7 @@ public final class Message implements Serializable {
   private final Boolean delayWhileIdle;
   private final Integer timeToLive;
   private final Map<String, String> data;
+  private final Map<String, String> notification;
   private final Boolean dryRun;
   private final String restrictedPackageName;
   private final String priority;
@@ -71,10 +72,13 @@ public final class Message implements Serializable {
     NORMAL, HIGH
   }
 
+  private final Boolean contentAvailable;
+  
   public static final class Builder {
 
     private final Map<String, String> data;
-
+    private final Map<String, String> notification;
+    
     // optional parameters
     private String collapseKey;
     private Boolean delayWhileIdle;
@@ -82,9 +86,11 @@ public final class Message implements Serializable {
     private Boolean dryRun;
     private String restrictedPackageName;
     private String priority;
+    private Boolean contentAvailable;
 
     public Builder() {
       this.data = new LinkedHashMap<String, String>();
+      this.notification = new LinkedHashMap<String, String>();
     }
 
     /**
@@ -119,6 +125,13 @@ public final class Message implements Serializable {
       return this;
     }
 
+    public Builder setNotification(String body, String title, String icon) {
+    	notification.put("body", body);
+    	notification.put("title", body);
+    	notification.put("icon", body);
+    	return this;
+    }
+    
     /**
      * Sets the dryRun property (default value is {@literal false}).
      */
@@ -164,6 +177,8 @@ public final class Message implements Serializable {
     dryRun = builder.dryRun;
     restrictedPackageName = builder.restrictedPackageName;
     priority = builder.priority;
+    notification = Collections.unmodifiableMap(builder.notification);
+    contentAvailable = builder.contentAvailable;
   }
 
   /**
@@ -236,6 +251,7 @@ public final class Message implements Serializable {
     if (restrictedPackageName != null) {
       builder.append("restrictedPackageName=").append(restrictedPackageName).append(", ");
     }
+
     if (!data.isEmpty()) {
       builder.append("data: {");
       for (Map.Entry<String, String> entry : data.entrySet()) {
@@ -245,6 +261,15 @@ public final class Message implements Serializable {
       builder.delete(builder.length() - 1, builder.length());
       builder.append("}");
     }
+    if (!notification.isEmpty()) {
+        builder.append("notification: {");
+        for (Map.Entry<String, String> entry : notification.entrySet()) {
+          builder.append(entry.getKey()).append("=").append(entry.getValue())
+              .append(",");
+        }
+        builder.delete(builder.length() - 1, builder.length());
+        builder.append("}");
+      }
     if (builder.charAt(builder.length() - 1) == ' ') {
       builder.delete(builder.length() - 2, builder.length());
     }
