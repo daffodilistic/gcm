@@ -1,5 +1,5 @@
 /*
- * Copyright 2012 Google Inc.
+ * Copyright Google Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
@@ -25,6 +25,16 @@ public final class Constants {
    */
   public static final String GCM_SEND_ENDPOINT =
       "https://gcm-http.googleapis.com/gcm/send";
+
+  /**
+   * Parameter for to field.
+   */
+  public static final String PARAM_TO = "to";
+
+  /**
+   * Prefix of the topic.
+   */
+  public static final String TOPIC_PREFIX = "/topics/";
 
   /**
    * HTTP parameter for registration id.
@@ -66,6 +76,11 @@ public final class Constants {
    * Parameter used to set the message priority.
    */
   public static final String PARAM_PRIORITY = "priority";
+
+  /**
+   * Parameter used to set the content available (iOS only)
+   */
+  public static final String PARAM_CONTENT_AVAILABLE = "content_available";
 
   /**
    * Value used to set message priority to normal.
@@ -167,9 +182,79 @@ public final class Constants {
   public static final String JSON_REGISTRATION_IDS = "registration_ids";
 
   /**
+   * JSON-only field representing the to recipient.
+   */
+  public static final String JSON_TO = "to";
+
+  /**
    * JSON-only field representing the payload data.
    */
   public static final String JSON_PAYLOAD = "data";
+
+  /**
+   * JSON-only field representing the notification payload.
+   */
+  public static final String JSON_NOTIFICATION = "notification";
+
+  /**
+   * JSON-only field representing the notification title.
+   */
+  public static final String JSON_NOTIFICATION_TITLE = "title";
+
+  /**
+   * JSON-only field representing the notification body.
+   */
+  public static final String JSON_NOTIFICATION_BODY = "body";
+
+  /**
+   * JSON-only field representing the notification icon.
+   */
+  public static final String JSON_NOTIFICATION_ICON = "icon";
+
+  /**
+   * JSON-only field representing the notification sound.
+   */
+  public static final String JSON_NOTIFICATION_SOUND = "sound";
+
+  /**
+   * JSON-only field representing the notification badge.
+   */
+  public static final String JSON_NOTIFICATION_BADGE = "badge";
+
+  /**
+   * JSON-only field representing the notification tag.
+   */
+  public static final String JSON_NOTIFICATION_TAG = "tag";
+
+  /**
+   * JSON-only field representing the notification color.
+   */
+  public static final String JSON_NOTIFICATION_COLOR = "color";
+
+  /**
+   * JSON-only field representing the notification click action.
+   */
+  public static final String JSON_NOTIFICATION_CLICK_ACTION = "click_action";
+
+  /**
+   * JSON-only field representing the notification body localization key.
+   */
+  public static final String JSON_NOTIFICATION_BODY_LOC_KEY = "body_loc_key";
+
+  /**
+   * JSON-only field representing the notification body localization values.
+   */
+  public static final String JSON_NOTIFICATION_BODY_LOC_ARGS = "body_loc_args";
+
+  /**
+   * JSON-only field representing the notification title localization key.
+   */
+  public static final String JSON_NOTIFICATION_TITLE_LOC_KEY = "title_loc_key";
+
+  /**
+   * JSON-only field representing the notification title localization values.
+   */
+  public static final String JSON_NOTIFICATION_TITLE_LOC_ARGS = "title_loc_args";
 
   /**
    * JSON-only field representing the number of successful messages.

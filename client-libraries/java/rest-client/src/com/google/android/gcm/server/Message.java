@@ -1,5 +1,5 @@
 /*
- * Copyright 2012 Google Inc.
+ * Copyright Google Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
@@ -63,22 +63,21 @@ public final class Message implements Serializable {
   private final Boolean delayWhileIdle;
   private final Integer timeToLive;
   private final Map<String, String> data;
-  private final Map<String, String> notification;
   private final Boolean dryRun;
   private final String restrictedPackageName;
   private final String priority;
+  private final Boolean contentAvailable;
+  private final Notification notification;
+
 
   public enum Priority {
     NORMAL, HIGH
   }
 
-  private final Boolean contentAvailable;
-  
   public static final class Builder {
 
     private final Map<String, String> data;
-    private final Map<String, String> notification;
-    
+
     // optional parameters
     private String collapseKey;
     private Boolean delayWhileIdle;
@@ -87,10 +86,10 @@ public final class Message implements Serializable {
     private String restrictedPackageName;
     private String priority;
     private Boolean contentAvailable;
+    private Notification notification;
 
     public Builder() {
       this.data = new LinkedHashMap<String, String>();
-      this.notification = new LinkedHashMap<String, String>();
     }
 
     /**
@@ -125,13 +124,6 @@ public final class Message implements Serializable {
       return this;
     }
 
-    public Builder setNotification(String body, String title, String icon) {
-    	notification.put("body", body);
-    	notification.put("title", body);
-    	notification.put("icon", body);
-    	return this;
-    }
-    
     /**
      * Sets the dryRun property (default value is {@literal false}).
      */
@@ -163,6 +155,22 @@ public final class Message implements Serializable {
       return this;
     }
 
+    /**
+     * Sets the notification property.
+     */
+    public Builder notification(Notification value) {
+      notification = value;
+      return this;
+    }
+
+    /**
+     * Sets the contentAvailable property
+     */
+    public Builder contentAvailable(Boolean value){
+        contentAvailable = value;
+        return this;
+    }
+
     public Message build() {
       return new Message(this);
     }
@@ -177,8 +185,8 @@ public final class Message implements Serializable {
     dryRun = builder.dryRun;
     restrictedPackageName = builder.restrictedPackageName;
     priority = builder.priority;
-    notification = Collections.unmodifiableMap(builder.notification);
     contentAvailable = builder.contentAvailable;
+    notification = builder.notification;
   }
 
   /**
@@ -224,10 +232,24 @@ public final class Message implements Serializable {
   }
 
   /**
+   * Gets the contentAvailable value
+   */
+  public Boolean getContentAvailable() {
+      return contentAvailable;
+  }
+
+  /**
    * Gets the payload data, which is immutable.
    */
   public Map<String, String> getData() {
     return data;
+  }
+
+  /**
+   * Gets notification payload, which is immutable.
+   */
+  public Notification getNotification() {
+    return notification;
   }
 
   @Override
@@ -235,6 +257,9 @@ public final class Message implements Serializable {
     StringBuilder builder = new StringBuilder("Message(");
     if (priority != null) {
       builder.append("priority=").append(priority).append(", ");
+    }
+    if (contentAvailable != null){
+        builder.append("contentAvailable=").append(contentAvailable).append(", ");
     }
     if (collapseKey != null) {
       builder.append("collapseKey=").append(collapseKey).append(", ");
@@ -251,7 +276,9 @@ public final class Message implements Serializable {
     if (restrictedPackageName != null) {
       builder.append("restrictedPackageName=").append(restrictedPackageName).append(", ");
     }
-
+    if (notification != null) {
+      builder.append("notification: ").append(notification).append(", ");
+    }
     if (!data.isEmpty()) {
       builder.append("data: {");
       for (Map.Entry<String, String> entry : data.entrySet()) {
@@ -261,15 +288,6 @@ public final class Message implements Serializable {
       builder.delete(builder.length() - 1, builder.length());
       builder.append("}");
     }
-    if (!notification.isEmpty()) {
-        builder.append("notification: {");
-        for (Map.Entry<String, String> entry : notification.entrySet()) {
-          builder.append(entry.getKey()).append("=").append(entry.getValue())
-              .append(",");
-        }
-        builder.delete(builder.length() - 1, builder.length());
-        builder.append("}");
-      }
     if (builder.charAt(builder.length() - 1) == ' ') {
       builder.delete(builder.length() - 2, builder.length());
     }
